@@ -18,19 +18,19 @@ class Data
     public void create()
     {
          for(int i=0;i<3;i++)
-                    {
-                        System.out.println("Enter your Name : ");
-                        name[i] = sc.nextLine();
-                        System.out.println("Enter your User Name : ");
-                        id[i] = sc.nextLine();
-                        System.out.println("Enter your Password : ");
-                        password[i] = sc.nextLine();
-                        System.out.println("Enter your Amount : ");
-                        amount[i] = in.nextInt();
-                        accountnum[i]="00"+(i+1);
-                        System.out.println("Your acoount has been created successfully.");
-                        System.out.println("Your Account Number is "+accountnum[i]);
-                    }
+                        {
+                            System.out.println("Enter your Name : ");
+                            name[i] = sc.nextLine();
+                            System.out.println("Enter your User Name : ");
+                            id[i] = sc.nextLine();
+                            System.out.println("Enter your Password : ");
+                            password[i] = sc.nextLine();
+                            System.out.println("Enter your Amount : ");
+                            amount[i] = in.nextInt();
+                            accountnum[i]="00"+(i+1);
+                            System.out.println("Your acoount has been created successfully.");
+                            System.out.println("Your Account Number is "+accountnum[i]);
+                        }
     }
     public void login()
     {
@@ -139,12 +139,8 @@ public class Bank
     static Data d = new Data();
     static Scanner sc = new Scanner(System.in);
     static Scanner in = new Scanner(System.in);
-    
-    
     static int choice;
     static boolean loop = true;
-   
-    
     public static void main(String[] args) 
     {
         System.out.println("Welcome to Bank\n");
@@ -159,7 +155,7 @@ public class Bank
             System.out.println("Select 7 for Exit");
             try{
             choice = Integer.parseInt(in.next());                
-            }catch(Exception e){
+            }catch(NumberFormatException e){
                 System.out.println("Error 121: Enter valid input.");
                continue;
             }
