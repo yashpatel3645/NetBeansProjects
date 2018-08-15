@@ -89,7 +89,7 @@ class data
             {
                 for(int k=0;k<10;k++)
                 {
-                    if(cartname[i][k]!=null)
+                    if(cartname[i][k]==null)
                     {
                         System.out.println("Enter product name : ");
                         cartname[i][k] = sc.next();
@@ -115,8 +115,10 @@ class data
                                 System.out.println("QTY is large then available QTY");
                                 break;
                             }
+                            break;
                         }
                     }
+                    
                 }
             }
         }
@@ -128,15 +130,17 @@ class data
         {
             if(lid.equals(cid[i])&&lpassword.equals(cpassword[i]))
             {
-                
                 for(int k=0;k<10;k++)
                 {
-                    System.out.println();
-                    System.out.format("%5s%20s%20s%20s%20s%20s",(k+1),cartid[i][k],cartname[i][k],cartprice[i][k],cartqty[i][k],(cartprice[i][k]*cartqty[i][k]));
+                    if(cartname[i][k]!=null)
+                    {
+                        System.out.println();
+                        System.out.format("%5s%20s%20s%20s%20s%20s",(k+1),cartid[i][k],cartname[i][k],cartprice[i][k],cartqty[i][k],(cartprice[i][k]*cartqty[i][k]));
+                    }
                 }
                 for(int k=0;k<9;k++)
                 {
-                    carttotal = (cartprice[i][k]*cartqty[i][k])+(cartprice[i+1][k+1]*cartqty[i+1][k+1]);
+                    carttotal = (cartprice[i][k]*cartqty[i][k])+(cartprice[i][k+1]*cartqty[i][k+1]);
                 }
                 System.out.format("%5s%20s%20s%20s%20s%20s","","","","","total",carttotal);
             }
