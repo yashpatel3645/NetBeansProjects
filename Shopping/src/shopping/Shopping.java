@@ -6,10 +6,10 @@ import static shopping.data.lpassword;
 class data
 {
     static Scanner sc = new Scanner(System.in);
-    static int[] pid = new int[5];
-    static String[] pname= new String[5];
-    static int[] pprice = new int[5];
-    static int[] pqty = new int[5];
+    static int[] pid = new int[2];
+    static String[] pname= new String[2];
+    static int[] pprice = new int[2];
+    static int[] pqty = new int[2];
     static String[] cname = new String[3];
     static String[] cid = new String[3];
     static String[] cpassword = new String[3];
@@ -18,24 +18,39 @@ class data
     static int[][] cartqty = new int[3][10];
     static int[][] cartid = new int[3][10];
     static int[][] cartprice = new int[3][10];
-    static int carttotal;
+    static String[][] buyname = new String[3][10];
+    static int[][] buyqty = new int[3][10];
+    static int[][] buyid = new int[3][10];
+    static int[][] buyprice = new int[3][10];
+    static int carttotal,buytotal;
+    
     public void addproduct()
     {
-        for(int i=0;i<5;i++)
+        for(int i=0;i<2;i++)
         {
             System.out.println("Enter product name : ");
             pname[i] = sc.next();
             pid[i] = (i+1);
             System.out.println("Enter product price : ");
+            try{
             pprice[i] = sc.nextInt();
             System.out.println("Enter product QTY : ");
-            pqty[i] = sc.nextInt();
+                pqty[i] = sc.nextInt();
+            }
+            catch(Exception e)
+            {
+                System.out.println("Error 101 : Enter QTY in number.");
+                pname[i]=null;
+                pqty[i]=0;
+                pid[i]=0;
+                pprice[i]=0;
+            }
             System.out.println("Product added successfull.");
         }
     }
     public void createaccount()
     {
-        for(int i=0;i<3;i++)
+        for(int i=0;i<1;i++)
         {
             System.out.println("Enter your name : ");
             cname[i] = sc.next();
@@ -74,10 +89,13 @@ class data
     public void showproduct()
     {
         System.out.format("%5s%20s%20s%20s%20s","No.","Product ID","Product Name","Product Price","Product QTY");
-        for(int i=0;i<5;i++)
+        for(int i=0;i<2;i++)
         {
-            System.out.println();
-            System.out.format("%5s%20s%20s%20s%20s",(i+1),pid[i],pname[i],pprice[i],pqty[i]);
+            if(pname[i]!=null&&pqty[i]!=0)
+            {
+                System.out.println();
+                System.out.format("%5s%20s%20s%20s%20s",(i+1),pid[i],pname[i],pprice[i],pqty[i]);
+            }
         }
         System.out.println();
     }
@@ -94,8 +112,17 @@ class data
                         System.out.println("Enter product name : ");
                         cartname[i][k] = sc.next();
                         System.out.println("Enter QTY : ");
+                        try{
                         cartqty[i][k] = sc.nextInt();
-                        for(int j=0;j<5;j++)
+                        }
+                        catch(Exception e)
+                        {
+                            System.out.println("Error 101 : Enter QTY in number.");
+                            cartname[i][k]=null;
+                            cartqty[i][k]=0;
+                            break;
+                        }
+                        for(int j=0;j<2;j++)
                         {
                             if(cartname[i][k].equals(pname[j])&&cartqty[i][k]<=pqty[j])
                             {
@@ -105,16 +132,27 @@ class data
                                 System.out.println("Product added to cart successfull.");
                                 break;
                             }
-                            if(!cartname[i].equals(pname[j]))
-                            {
-                                System.out.println("Product not found.");
-                                break;
-                            }
                             if(cartqty[i][k]>pqty[j])
+                                {
+                                    System.out.println("QTY is large then available QTY.");
+                                    cartname[i][k]=null;
+                                    cartqty[i][k]=0;
+                                    break;
+                                }
+                            if(j==(cartname.length-1))
                             {
-                                System.out.println("QTY is large then available QTY");
+                                if(!cartname[i][k].equals(pname[j]))
+                                {
+                                    System.out.println("Product not found.");
+                                    cartname[i][k]=null;
+                                    cartqty[i][k]=0;
+                                    break;
+                                }
                                 break;
                             }
+                        }
+                        if(cartname[i][k+1]==null)
+                        {
                             break;
                         }
                     }
@@ -132,7 +170,7 @@ class data
             {
                 for(int k=0;k<10;k++)
                 {
-                    if(cartname[i][k]!=null)
+                    if(cartname[i][k]!=null&&cartqty[i][k]!=0)
                     {
                         System.out.println();
                         System.out.format("%5s%20s%20s%20s%20s%20s",(k+1),cartid[i][k],cartname[i][k],cartprice[i][k],cartqty[i][k],(cartprice[i][k]*cartqty[i][k]));
@@ -140,11 +178,99 @@ class data
                 }
                 for(int k=0;k<9;k++)
                 {
-                    carttotal = (cartprice[i][k]*cartqty[i][k])+(cartprice[i][k+1]*cartqty[i][k+1]);
+                    carttotal = carttotal+((cartprice[i][k]*cartqty[i][k])+(cartprice[i][k+1]*cartqty[i][k+1]));
                 }
-                System.out.format("%5s%20s%20s%20s%20s%20s","","","","","total",carttotal);
+                System.out.println();
+                System.out.format("%5s%20s%20s%20s%20s%20s","","","","","Total",carttotal);
+                System.out.println();
             }
         }
+    }
+    public void buy()
+    {
+        System.out.format("%5s%20s%20s%20s%20s%20s","No.","Product ID","Product Name","Product Price","Product QTY","Total Price");
+        for(int i=0;i<3;i++)
+        {
+            if(lid.equals(cid[i])&&lpassword.equals(cpassword[i]))
+            {
+                for(int k=0;k<10;k++)
+                {
+                    if(cartname[i][k]!=null&&cartqty[i][k]!=0)
+                    {
+                        System.out.println();
+                        System.out.format("%5s%20s%20s%20s%20s%20s",(k+1),cartid[i][k],cartname[i][k],cartprice[i][k],cartqty[i][k],(cartprice[i][k]*cartqty[i][k]));
+                    }
+                }
+                for(int k=0;k<9;k++)
+                {
+                    carttotal = carttotal+((cartprice[i][k]*cartqty[i][k])+(cartprice[i][k+1]*cartqty[i][k+1]));
+                }
+                System.out.println();
+                System.out.format("%5s%20s%20s%20s%20s%20s","","","","","Total",carttotal);
+                System.out.println();
+            }
+        }
+        System.out.println("Continue to buy(y/n).");
+        String con = sc.next();
+        if(con=="y"||con=="Y")
+        {
+            for(int i=0;i<3;i++)
+            {
+                if(lid.equals(cid[i])&&lpassword.equals(cpassword[i]))
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if(cartname[i][k]!=null&&cartqty[i][k]!=0)
+                        {
+                            buyname[i][k] = cartname[i][k];
+                            buyid[i][k] = cartid[i][k];
+                            buyprice[i][k] = cartprice[i][k];
+                            buyqty[i][k] = cartqty[i][k];
+                            cartname[i][k]=null;
+                            cartqty[i][k]=0;
+                            cartprice[i][k]=0;
+                            cartid[i][k]=0;
+                            System.out.println("Order placed successfully.");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            System.out.println("Continue shopping....");
+        }
+    }
+    public void buyshow()
+    {
+        System.out.format("%5s%20s%20s%20s%20s%20s","No.","Product ID","Product Name","Product Price","Product QTY","Total Price");
+        for(int i=0;i<3;i++)
+        {
+            if(lid.equals(cid[i])&&lpassword.equals(cpassword[i]))
+            {
+                for(int k=0;k<10;k++)
+                {
+                    if(buyname[i][k]!=null&&buyqty[i][k]!=0)
+                    {
+                        System.out.println();
+                        System.out.format("%5s%20s%20s%20s%20s%20s",(k+1),buyid[i][k],buyname[i][k],buyprice[i][k],buyqty[i][k],(buyprice[i][k]*buyqty[i][k]));
+                    }
+                }
+                for(int k=0;k<9;k++)
+                {
+                    buytotal = buytotal+((buyprice[i][k]*buyqty[i][k])+(buyprice[i][k+1]*buyqty[i][k+1]));
+                }
+                System.out.println();
+                System.out.format("%5s%20s%20s%20s%20s%20s","","","","","Total",buytotal);
+                System.out.println();
+            }
+        }
+    }
+    public void logout()
+    {
+        lid=null;
+        lpassword=null;
+        System.out.println("Logout Successfull.");
     }
 }
 public class Shopping
@@ -202,8 +328,8 @@ public class Shopping
                    {
                         System.out.println("Login first.");
                         break;
-                   }
-                   d.showcart();
+                   } 
+                   d.showcart(); 
                    break;
                case 7:
                    if(lid==null&&lpassword==null)
@@ -211,18 +337,21 @@ public class Shopping
                         System.out.println("Login first.");
                         break;
                    }
+                   d.buy();
                case 8:
                    if(lid==null&&lpassword==null)
                    {
                         System.out.println("Login first.");
                         break;
                    }
+                   d.buyshow();
                case 9:
                    if(lid==null&&lpassword==null)
                    {
                         System.out.println("Login first.");
                         break;
                    }
+                   d.logout();
                case 10:
                    System.exit(0);
                    break;
