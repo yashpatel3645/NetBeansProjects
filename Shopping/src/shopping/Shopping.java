@@ -157,7 +157,6 @@ class data
                             break;
                         }
                     }
-                    
                 }
             }
         }
